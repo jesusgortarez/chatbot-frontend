@@ -52,13 +52,16 @@ function App() {
         content: msg.content,
       }));
 
-      const response = await axios.post("http://localhost:5000/chat", {
-        message: input,
-        conversationHistory: conversationHistory.slice(0, -1), // Excluir el último mensaje (ya incluido en 'message')
-        model: settings.model,
-        temperature: parseFloat(settings.temperature),
-        max_tokens: parseInt(settings.max_tokens),
-      });
+      const response = await axios.post(
+        "https://chatbot-backend-vaup.onrender.com/chat",
+        {
+          message: input,
+          conversationHistory: conversationHistory.slice(0, -1), // Excluir el último mensaje (ya incluido en 'message')
+          model: settings.model,
+          temperature: parseFloat(settings.temperature),
+          max_tokens: parseInt(settings.max_tokens),
+        }
+      );
 
       // Actualizar mensajes con la respuesta
       setMessages((prevMessages) => [
@@ -98,17 +101,20 @@ function App() {
       }));
 
       // Realizar solicitud de streaming
-      const response = await fetch("http://localhost:5000/chat/stream", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          message: input,
-          conversationHistory: conversationHistory.slice(0, -1),
-          model: settings.model,
-          temperature: parseFloat(settings.temperature),
-          max_tokens: parseInt(settings.max_tokens),
-        }),
-      });
+      const response = await fetch(
+        "https://chatbot-backend-vaup.onrender.com/chat/stream",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            message: input,
+            conversationHistory: conversationHistory.slice(0, -1),
+            model: settings.model,
+            temperature: parseFloat(settings.temperature),
+            max_tokens: parseInt(settings.max_tokens),
+          }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`Error HTTP: ${response.status}`);
